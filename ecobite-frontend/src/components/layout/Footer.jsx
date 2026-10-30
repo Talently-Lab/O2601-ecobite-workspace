@@ -1,9 +1,11 @@
+import "./Footer.css"
+
 function Footer() {
+
+
   return (
-    <footer>
-      <div>
-        Soy un footer
-      </div>
+    <footer className="footer">
+      <div>Soy un footer</div>
     </footer>
   );
 }
