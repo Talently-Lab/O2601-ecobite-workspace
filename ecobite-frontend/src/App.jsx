@@ -14,7 +14,7 @@ import Login from "./pages/Login";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
 
       {/*con header y footer*/}
