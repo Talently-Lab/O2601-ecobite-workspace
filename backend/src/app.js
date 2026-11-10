@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 
+import healthRoutes from "./routes/health.routes.js";
+
 const app = express();
 
 // Middlewares
@@ -16,5 +18,8 @@ app.get("/health", (req, res) => {
     message: "EcoBite API funcionando",
   });
 });
+
+// Health check for database connection
+app.use("/health", healthRoutes);
 
 export default app;
