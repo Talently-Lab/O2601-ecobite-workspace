@@ -1,8 +1,10 @@
+
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 
 import healthRoutes from "./routes/health.routes.js";
+import apiRoutes from "./api.routes.js";
 
 const app = express();
 
@@ -19,7 +21,10 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Health check for database connection
+// Health check de base de datos
 app.use("/health", healthRoutes);
+
+// Rutas principales de la API
+app.use("/api", apiRoutes);
 
 export default app;

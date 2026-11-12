@@ -23,29 +23,44 @@ Permite que los usuarios consulten ofertas de comida a precio reducido, realicen
 - CORS
 - dotenv
 - Morgan
+- Joi (validación de datos)
+- bcryptjs (hash de contraseñas)
 
 ## Estructura del Backend
 
-```text
+```
 backend/
 ├── prisma/
-│   ├── migrations/        # Migraciones de la base de datos
-│   └── schema.prisma      # Modelos y relaciones
+│   ├── migrations/
+│   └── schema.prisma
 ├── src/
 │   ├── config/
-│   │   └── prisma.js      # Cliente Prisma
-│   ├── controllers/       # Controladores HTTP
-│   ├── middlewares/       # Middlewares
-│   ├── models/            # Carpeta para lógica de modelos
-│   ├── routes/            # Rutas de la API
-│   └── app.js             # Configuración de Express
-├── index.js               # Inicio del servidor
-├── docker-compose.yml     # Contenedor PostgreSQL
-├── prisma7.config.ts      # Configuración de Prisma
-├── .env.example           # Variables de entorno de ejemplo
-├── .gitignore
-├── package.json
-└── package-lock.json
+│   │   └── prisma.js
+│   ├── controllers/
+│   │   └── health.controller.js
+│   ├── middlewares/
+│   │   └── validateData.js
+│   ├── modules/
+│   │   ├── restaurants/
+│   │   │   ├── restaurant.routes.js
+│   │   │   ├── restaurant.controller.js
+│   │   │   └── restaurant.service.js
+│   │   └── users/
+│   │       ├── user.routes.js
+│   │       ├── user.controller.js
+│   │       ├── user.service.js
+│   │       └── user.schema.js
+│   ├── routes/
+│   │   └── health.routes.js
+│   ├── utils/
+│   │   └── responseHelper.js
+│   ├── api.routes.js
+│   └── app.js
+├── index.js
+├── docker-compose.yml
+├── prisma7.config.ts
+├── .env.example
+└── package.json
 ```
 
 ## Instalación y ejecución
@@ -178,6 +193,125 @@ GET http://localhost:3000/health/db
 
 Si la base de datos no responde, devuelve `503 Service Unavailable`.
 
+### GET /api/restaurants
+
+Obtiene el listado de restaurantes activos registrados en EcoBite, ordenados alfabéticamente.
+
+**URL:**
+
+```http
+GET http://localhost:3000/api/restaurants
+```
+
+**Respuesta exitosa — 200 OK:**
+
+```json
+{
+  "success": true,
+  "message": "Restaurantes obtenidos correctamente",
+  "data": []
+}
+```
+
+Si no existen restaurantes activos, devuelve un arreglo vacío.
+
+**Errores posibles:**
+
+- `500 Internal Server Error`: error inesperado al consultar la base de datos.
+
+---
+
+### POST /api/users/register
+
+Permite registrar un nuevo usuario con rol `CLIENTE` en la plataforma.
+
+**URL:**
+
+```http
+POST http://localhost:3000/api/users/register
+```
+
+**Body (JSON):**
+
+```json
+{
+  "name": "Usuario Prueba",
+  "email": "prueba@ecobite.com",
+  "password": "Prueba1234"
+}
+```
+
+**Validaciones:**
+
+- `name`: obligatorio, entre 2 y 100 caracteres.
+- `email`: obligatorio y con formato válido.
+- `password`: obligatoria, entre 8 y 72 caracteres.
+- El correo electrónico debe ser único.
+
+La contraseña se almacena hasheada mediante `bcryptjs`. No se devuelve en la respuesta de la API.
+
+**Respuesta exitosa — 201 Created:**
+
+```json
+{
+  "success": true,
+  "message": "Usuario registrado correctamente",
+  "data": {
+    "id": "6d827568-8550-4a1d-a3cf-5eea4e6a99c3",
+    "name": "Usuario Prueba",
+    "email": "prueba@ecobite.com",
+    "role": "CLIENTE",
+    "createdAt": "2026-11-12T15:28:56.384Z"
+  }
+}
+```
+
+*Los valores de `id` y `createdAt` son ilustrativos y se generan automáticamente.*
+
+**Errores posibles:**
+
+| Código HTTP | Descripción |
+|---|---|
+| `400 Bad Request` | Datos faltantes o inválidos. |
+| `409 Conflict` | El email ya se encuentra registrado. |
+| `500 Internal Server Error` | Error inesperado del servidor. |
+
+**Ejemplo — 400 Bad Request:**
+
+```json
+{
+  "success": false,
+  "message": "Error de validación en los datos ingresados",
+  "errors": [
+    {
+      "field": "password",
+      "message": "La contraseña debe tener al menos 8 caracteres"
+    }
+  ]
+}
+```
+
+**Ejemplo — 409 Conflict:**
+
+```json
+{
+  "success": false,
+  "message": "El email ya está registrado"
+}
+```
+
+---
+
+### Validaciones y manejo de respuestas
+
+La API utiliza componentes reutilizables para mantener una estructura consistente:
+
+- `responseHelper.js`: centraliza las respuestas HTTP y sus códigos de estado.
+- `validateData.js`: middleware de validación utilizando Joi.
+- `user.schema.js`: define las reglas de validación del registro de usuarios.
+
+La validación se ejecuta antes del controlador para evitar procesar solicitudes con datos incorrectos.
+
 ## Base de datos
 
 El backend utiliza **PostgreSQL ejecutado mediante Docker Compose** y **Prisma ORM** para administrar los modelos, las relaciones y las migraciones.
@@ -226,25 +360,35 @@ npx prisma migrate deploy
 
 ### Implementado
 
-- Estructura inicial del backend.
-- Configuración de Express.
-- Middlewares CORS, JSON y Morgan.
-- Variables de entorno.
-- PostgreSQL configurado mediante Docker Compose.
-- Prisma ORM configurado.
+**Semana 2 — Configuración y base de datos**
+
+- Configuración inicial de Node.js y Express.
+- PostgreSQL mediante Docker Compose.
+- Prisma ORM y migración inicial.
 - Modelos User, Restaurant, Surplus y Reservation.
-- Relaciones y migración inicial de base de datos.
-- Conexión de Prisma Client con PostgreSQL.
-- Endpoints `/health` y `/health/db`.
+- Endpoints de salud `/health` y `/health/db`.
+
+**Semana 3 — Primeros endpoints**
+
+- Arquitectura modular con separación de rutas, controladores y servicios.
+- `GET /api/restaurants`: listado de restaurantes activos.
+- `POST /api/users/register`: registro de clientes.
+- Validación de datos mediante Joi.
+- Hash de contraseñas con bcryptjs.
+- Manejo centralizado de respuestas y códigos HTTP.
+- Pruebas funcionales con Postman.
+- Verificación de persistencia de usuarios en PostgreSQL mediante DBeaver.
 
 ### Pendiente
 
-- Autenticación y autorización.
-- Endpoints de restaurantes, excedentes y reservas.
-- Validaciones de negocio y restricciones de integridad pendientes.
+- Login y autenticación mediante JWT.
+- Autorización por roles (CLIENTE y ADMIN).
+- Gestión de restaurantes y excedentes.
+- Creación y gestión de reservas.
+- Generación y validación de códigos de retiro.
 - Cálculo de kilogramos de comida rescatada.
-- Pruebas y documentación completa de la API.
-- Deploy.
+- Documentación completa de la API.
+- Pruebas de integración y deploy.
 
 ## Responsable
 
