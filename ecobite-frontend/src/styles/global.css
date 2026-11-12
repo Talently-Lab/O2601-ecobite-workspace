@@ -1,3 +1,49 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: var(--font-main);
+  color: var(--c-text);
+  background-color: var(--c-primary);
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+
+  background-image: url("../assets/backgrounds/body-bg.svg");
+  background-repeat: repeat;
+  background-size: 280px;
+  transform: rotate(15deg);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+html {
+  scroll-behavior: smooth;
 }

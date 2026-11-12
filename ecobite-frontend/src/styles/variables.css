@@ -1,25 +1,49 @@
 :root {
+  /*---------------------*/
   /* Colores principales */
+  /*---------------------*/
+  
+  /*    identidad del sitio*/
   --c-primary: #007A55; 
   --c-primary-dark: #134E35;
   --c-accent:#F26B21;
   --c-highlight: #FFC94A;
+
+  /*    naturalezas*/
   --c-leaf: #51A52B;
   --c-fresh: #8FD36B;
+
+  /*fondos/superficies*/
   --c-bg: #FFF7E8;
   --c-surface-alt: #DFF3E3;
-  --c-border: #EFE6D2;
   --c-kraft: #C9A27A;
+
+  /* bordes*/
+  --c-border: #EFE6D2;
+
+  /* textos*/
   --c-text: #1C1917;
   --c-text-muted: #5B6B63;
+
+  /* estados */
   --c-danger: #D9443B;
 
-
-  /* Colores secundarios */
-
-
+  /*------------*/
   /* Tipografía */
+  /*------------*/
   --font-main: "Plus Jakarta Sans", sans-serif;
 
+  /*--------*/
+  /* Layout */
+  /*--------*/
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  /* LAYOUT */
+  --page-gutter: 24px;
+  --content-max-width: 1440px;
 
 }
