@@ -28,7 +28,7 @@ Permite que los usuarios consulten ofertas de comida a precio reducido, realicen
 
 ## Estructura del Backend
 
-
+```
 backend/
 ├── prisma/
 │   ├── migrations/
@@ -61,7 +61,7 @@ backend/
 ├── prisma7.config.ts
 ├── .env.example
 └── package.json
-
+```
 
 ## Instalación y ejecución
 
