@@ -1,7 +1,11 @@
+import dashboardImage from '../../../assets/dashboard-placeholder.jpg'
+import './Dashboard.css'
+
 function Dashboard(){
     return(
         <>
-        <img src="https://picsum.photos/200/200" />
+            <img src={dashboardImage}
+      alt="Vista previa del dashboard" className="dashboard-image" />
         </>
     )
 }
