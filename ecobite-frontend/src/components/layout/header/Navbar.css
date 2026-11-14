@@ -1,0 +1,262 @@
+.navbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
+/* -------------------------------------------------------------
+   Estilos para navbar horizontal 
+-------------------------------------------------------------- */
+.navbar__elements {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Barra de búsqueda */
+.navbar__search-bar {
+  flex: 1 1 auto;
+  min-width: 200px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px 0 16px;
+  background-color: #ffffff;
+  border: 1px solid var(--c-border);
+  border-radius: 9999px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.navbar__search-bar:focus-within {
+  border-color: var(--c-primary);
+}
+
+.navbar__search-icon {
+  color: var(--c-text-muted);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.navbar__search-input {
+  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  color: var(--c-text);
+  padding: 0;
+}
+
+.navbar__search-input::placeholder {
+  color: var(--c-text-muted);
+}
+
+/* Botón limpiar búsqueda (X) */
+.navbar__search-clear-btn {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: var(--c-text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.navbar__search-clear-btn:hover {
+  color: var(--c-text);
+  background-color: var(--c-surface-alt);
+}
+
+/* Recuadro de Ubicación */
+.navbar__location {
+  flex: 0 0 auto;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  background-color: var(--c-surface-alt);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  box-sizing: border-box;
+  cursor: default;
+  user-select: none;
+}
+
+.navbar__location-icon {
+  color: var(--c-primary);
+  font-size: 0.95rem;
+}
+
+.navbar__location-text {
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--c-text);
+  max-width: 25ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+/* Botón de Login Desktop */
+.navbar__login-btn {
+  flex: 0 0 auto;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 20px;
+  background-color: var(--c-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.navbar__login-btn:hover {
+  background-color: var(--c-primary-dark);
+}
+
+.navbar__login-btn:active {
+  transform: scale(0.98);
+}
+
+/* -------------------------------------------------------------
+   estilos para navbar hamburguesa
+-------------------------------------------------------------- */
+.navbar__hamburger-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  color: var(--c-primary-dark);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  z-index: 1002;
+}
+
+.navbar__hamburger-btn:hover {
+  background-color: var(--c-surface-alt);
+}
+
+/* -------------------------------------------------------------
+  Menú Flotante Desplegable Dropdown
+-------------------------------------------------------------- */
+.navbar__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background: transparent;
+}
+
+.navbar__dropdown {
+  position: absolute;
+  top: calc(100% + 14px); /* Justo bajo la barra del header, 14 px de separacion */
+  right: 0; 
+  min-width: 220px;
+  max-width: 280px;
+  background-color: #ffffff;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1001;
+  animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar__dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  color: var(--c-text);
+  cursor: pointer;
+  text-align: left;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.navbar__dropdown-item:hover {
+  background-color: var(--c-surface-alt);
+  color: var(--c-primary-dark);
+}
+
+.navbar__dropdown-icon {
+  width: 18px;
+  font-size: 1rem;
+  color: var(--c-primary);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.navbar__dropdown-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* -------------------------------------------------------------
+   Responsive Breakpoint (Colapso a Mobile / falta de espacio)
+-------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .navbar__elements {
+    display: none;
+  }
+
+  .navbar__hamburger-btn {
+    display: flex;
+  }
+}

@@ -1,8 +1,9 @@
 import React from "react";
 import "./RestaurantCard.css";
 
-function RestaurantCard({ restaurant = {} }) {
+function RestaurantCard({ restaurant = {}, onSelect }) {
   const {
+    id,
     name = "Nombre del restaurante",
     address = "Dirección no disponible",
     description = "Sin descripción",
@@ -10,11 +11,27 @@ function RestaurantCard({ restaurant = {} }) {
     imageUrl = null, // Placeholder para cuando el backend entregue la URL de la imagen
   } = restaurant;
 
-  // Clase o estado dinámico según 'isActive'
+  // 'isActive' define la clase de la card
   const cardStatusClass = isActive ? "restaurant-card--active" : "restaurant-card--inactive";
 
+  const handleClick = () => {
+    if (onSelect) {
+      onSelect(id);
+    }
+  };
+
   return (
-    <article className={`restaurant-card ${cardStatusClass}`}>
+    <article
+      className={`restaurant-card ${cardStatusClass}`}
+      onClick={handleClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleClick();
+        }
+      }}
+    >
       {/* Header de la card, muestra el nombre del restaurant */}
       <header className="restaurant-card__header">
         <h3 className="restaurant-card__name">{name}</h3>
@@ -50,17 +67,6 @@ function RestaurantCard({ restaurant = {} }) {
           {description}
         </p>
       </div>
-
-      {/* Acciones del footer de la card (opcional) deshabilitado si no está activo */}
-      <footer className="restaurant-card__footer">
-        <button
-          type="button"
-          className="restaurant-card__action-btn"
-          disabled={!isActive}
-        >
-          {isActive ? "Accion1" : "No disponible"}
-        </button>
-      </footer>
     </article>
   );
 }

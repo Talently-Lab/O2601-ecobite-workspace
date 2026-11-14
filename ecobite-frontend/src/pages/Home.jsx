@@ -1,15 +1,18 @@
 import Hero from "../components/sections/hero/Hero";
-import RestaurantCard from "../components/ui/RestaurantCard";
+import RestaurantCardContainer from "../components/ui/RestaurantCardContainer";
 
 function Home() {
+  const handleSelectRestaurant = (id) => {
+    console.log("Restaurant seleccionado ID:", id);
+  };
+
   return (
     <>
       <Hero />
       <h1>Soy el contenido del main</h1>
-      <RestaurantCard/>
+      <RestaurantCardContainer minCards={3} onSelectRestaurant={handleSelectRestaurant} />
     </>
-  )
-
+  );
 }
 
 export default Home;

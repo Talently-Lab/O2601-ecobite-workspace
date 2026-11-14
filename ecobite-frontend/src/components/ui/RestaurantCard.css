@@ -1,8 +1,9 @@
-
 .restaurant-card {
+  /* Flex item: crece y encoge fluidamente entre 200px y 300px */
+  flex: 1 1 200px;
+  min-width: 200px;
+  max-width: 200px;
   width: 100%;
-  min-width: 140px;
-  max-width: 300px;
   box-sizing: border-box;
 
   display: flex;
@@ -15,15 +16,19 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   font-family: var(--font-main);
   color: var(--c-text);
+
+  /* Toda la card es un accionable */
+  cursor: pointer;
+  user-select: none; /* El texto no es seleccionable */
 }
 
-/* tarjetas activas: tiene hover */
+/* Tarjetas activas: elevación sutil en hover */
 .restaurant-card--active:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* tarjeta inactiva */
+/* Tarjeta inactiva */
 .restaurant-card--inactive {
   opacity: 1;
   background-color: rgba(255, 255, 255, 0.80);
@@ -39,7 +44,7 @@
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.25;
-  /* !!Cada linea tiene una latura fija:_ 2 lineas de texto: font-size * line-height * 2 */
+  /* Altura fija para 2 líneas: font-size * line-height * 2 */
   min-height: calc(1rem * 1.25 * 2);
   color: var(--c-primary-dark);
   
@@ -103,8 +108,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  flex-grow: 1; /* Empuja el footer hacia abajo */
-  margin-bottom: 12px;
+  flex-grow: 1;
 }
 
 .restaurant-card__address {
@@ -133,33 +137,4 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-/* 4. Footer y Botón de acción */
-.restaurant-card__footer {
-  margin-top: auto;
-}
-
-.restaurant-card__action-btn {
-  width: 100%;
-  padding: 8px 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  font-family: inherit;
-  border-radius: var(--radius-sm);
-  border: none;
-  cursor: pointer;
-  background-color: var(--c-primary);
-  color: #ffffff;
-  transition: background-color 0.2s ease;
-}
-
-.restaurant-card__action-btn:hover:not(:disabled) {
-  background-color: var(--c-primary-dark);
-}
-
-.restaurant-card__action-btn:disabled {
-  background-color: var(--c-border);
-  color: var(--c-text-muted);
-  cursor: not-allowed;
 }

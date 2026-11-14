@@ -1,5 +1,5 @@
 import Dashboard from './Dashboard'
-import heroContent from './Herocontent.js'
+import copywrittingMkt from '../../../constants/CopywrittingMkt.js'
 
 import './Hero.css'
 function Hero() {
@@ -11,8 +11,9 @@ function Hero() {
 
           </div>
           <div className="hero_copywriting">
-            <h1>{heroContent.title}</h1>
-            <p>{heroContent.description}</p>
+            
+            <h1>{copywrittingMkt.title}</h1>
+            <p>{copywrittingMkt.description}</p>
 
           </div>
           <nav></nav>
