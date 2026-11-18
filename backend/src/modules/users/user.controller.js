@@ -1,4 +1,4 @@
-import { registerUser } from "./user.service.js";
+import { registerUser, loginUser, getUserById } from "./user.service.js";
 import ResponseHelper from "../../utils/responseHelper.js";
 import { loginSchema } from "./user.schema.js";
 
@@ -51,6 +51,32 @@ export const login = async (req, res) => {
     return ResponseHelper.error(
       res,
       "Error al iniciar sesión",
+      error
+    );
+  }
+};
+
+// Función getMe para obtener los datos del usuario autenticado
+export const getMe = async (req, res) => {
+  try {
+    const user = await getUserById(req.user.id);
+
+    if (!user) {
+      return ResponseHelper.unauthorized(
+        res,
+        "Usuario no encontrado"
+      );
+    }
+
+    return ResponseHelper.success(
+      res,
+      user,
+      "Datos del usuario obtenidos correctamente"
+    );
+  } catch (error) {
+    return ResponseHelper.error(
+      res,
+      "Error al obtener usuario",
       error
     );
   }
