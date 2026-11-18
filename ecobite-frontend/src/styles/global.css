@@ -1,11 +1,13 @@
 * {
   box-sizing: border-box;
-}
+  }
 
 body {
+  margin:0;
   font-family: var(--font-main);
   color: var(--c-text);
-  background-color: var(--c-primary);
+  /*background-color: var(--c-primary);*/
+  background-color: var(--c-surface-alt);
   min-height: 100vh;
   position: relative;
 }

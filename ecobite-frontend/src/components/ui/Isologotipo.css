@@ -5,7 +5,8 @@
   flex-wrap: nowrap; 
   gap: 12px;
   height: 100%;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   box-sizing: border-box;
   overflow: hidden;
 }
