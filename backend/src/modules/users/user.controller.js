@@ -1,5 +1,6 @@
 import { registerUser, loginUser, getUserById } from "./user.service.js";
 import ResponseHelper from "../../utils/responseHelper.js";
+import { getAllClients } from "./user.service.js";
 import { loginSchema } from "./user.schema.js";
 
 export const createUser = async (req, res) => {
@@ -81,3 +82,23 @@ export const getMe = async (req, res) => {
     );
   }
 };
+
+// Función para obtener todos los clientes
+export const getClients = async (req, res) => {
+  try {
+    const clients = await getAllClients();
+
+    return ResponseHelper.success(
+      res,
+      clients,
+      "Clientes obtenidos correctamente"
+    );
+  } catch (error) {
+    return ResponseHelper.error(
+      res,
+      "Error al obtener clientes",
+      error
+    );
+  }
+};
+

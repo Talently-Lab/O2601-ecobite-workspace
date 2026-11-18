@@ -107,3 +107,24 @@ export const getUserById = async (id) => {
 
   return user;
 };
+
+
+export const getAllClients = async () => {
+  const clients = await prisma.user.findMany({
+    where: {
+      role: "CLIENTE",
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      createdAt: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return clients;
+};

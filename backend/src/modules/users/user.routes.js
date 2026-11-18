@@ -6,6 +6,8 @@ import { login, getMe } from "./user.controller.js";
 import { loginSchema } from "./user.schema.js";
 import { authenticate } from "../../middlewares/auth.middleware.js";
 import ResponseHelper from "../../utils/responseHelper.js";
+import { authorize } from "../../middlewares/authorize.middleware.js";
+import { getClients } from "./user.controller.js";
 
 const router = Router();
 
@@ -22,5 +24,9 @@ router.get("/me", authenticate, getMe,
     );
   }
 );
+
+router.get("/", authenticate, authorize("ADMIN"), getClients);
+
+
 
 export default router;
