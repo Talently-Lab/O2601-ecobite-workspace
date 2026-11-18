@@ -34,3 +34,9 @@ export const registerSchema = Joi.object({
       "any.required": "La contraseña es obligatoria",
     }),
 });
+
+//Esquema de validación para el inicio de sesión
+export const loginSchema = Joi.object({
+  email: Joi.string().trim().email().required(),
+  password: Joi.string().required(),
+});

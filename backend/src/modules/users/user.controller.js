@@ -1,5 +1,6 @@
 import { registerUser } from "./user.service.js";
 import ResponseHelper from "../../utils/responseHelper.js";
+import { loginSchema } from "./user.schema.js";
 
 export const createUser = async (req, res) => {
   try {
@@ -24,6 +25,32 @@ export const createUser = async (req, res) => {
     return ResponseHelper.error(
       res,
       "Error al registrar usuario",
+      error
+    );
+  }
+};
+
+// Función para iniciar sesión
+export const login = async (req, res) => {
+  try {
+    const result = await loginUser(req.body);
+
+    return ResponseHelper.success(
+      res,
+      result,
+      "Inicio de sesión exitoso"
+    );
+  } catch (error) {
+    if (error.statusCode === 401) {
+      return ResponseHelper.unauthorized(
+        res,
+        "Credenciales inválidas"
+      );
+    }
+
+    return ResponseHelper.error(
+      res,
+      "Error al iniciar sesión",
       error
     );
   }
