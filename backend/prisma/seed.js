@@ -1,8 +1,63 @@
 
 import prisma from "../src/config/prisma.js";
+import "dotenv/config";
+import bcrypt from "bcryptjs";
 
+// Seed de datos ADMIN para la aplicación EcoBite
+async function seedAdmin() {
+  const { ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
+
+  if (!ADMIN_NAME || !ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    throw new Error("Faltan credenciales ADMIN en .env");
+  }
+
+  if (ADMIN_PASSWORD.length < 10) {
+    throw new Error("ADMIN_PASSWORD debe tener al menos 10 caracteres");
+  }
+
+  const email = ADMIN_EMAIL.trim().toLowerCase();
+
+  // Verificar si ya existe un administrador
+  const existingAdmin = await prisma.user.findFirst({
+    where: { role: "ADMIN" },
+  });
+
+  if (existingAdmin) {
+    if (existingAdmin.email !== email) {
+      throw new Error("Ya existe otro administrador");
+    }
+
+    console.log("✅ Administrador existente:", existingAdmin.email);
+    return;
+  }
+
+  // Evitar reutilizar una cuenta cliente
+  const existingEmail = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (existingEmail) {
+    throw new Error("El email ya pertenece a otro usuario");
+  }
+
+  const passwordHash = await bcrypt.hash(ADMIN_PASSWORD, 10);
+
+  const admin = await prisma.user.create({
+    data: {
+      name: ADMIN_NAME.trim(),
+      email,
+      passwordHash,
+      role: "ADMIN",
+    },
+  });
+
+  console.log("✅ Administrador creado:", admin.email);
+}
+
+// Seed de datos de prueba para la aplicación EcoBite
 async function main() {
   console.log("🌱 Cargando datos de prueba de EcoBite...");
+  await seedAdmin();
 
   // 1. Buscar restaurante para evitar duplicados
   let restaurant = await prisma.restaurant.findFirst({
@@ -50,12 +105,12 @@ async function main() {
   // 4. Crear o actualizar el excedente de prueba
   const surplus = existingSurplus
     ? await prisma.surplus.update({
-        where: { id: existingSurplus.id },
-        data: surplusData,
-      })
+      where: { id: existingSurplus.id },
+      data: surplusData,
+    })
     : await prisma.surplus.create({
-        data: surplusData,
-      });
+      data: surplusData,
+    });
 
   console.log("✅ Excedente:", surplus.name);
   console.log("🎉 Datos de prueba cargados correctamente");
