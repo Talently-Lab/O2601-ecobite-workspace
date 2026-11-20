@@ -16,7 +16,8 @@ Permite a los usuarios explorar restaurantes asociados, descubrir productos a pr
 - React 19
 - Vite 8
 - React Router 7
-- Axios
+- Zustand (gestión de estado global y persistencia de sesión)
+- Axios (cliente HTTP)
 - CSS nativo (Variables CSS y diseño responsive con BEM)
 - FontAwesome (vía CDN)
 - Google Fonts (Plus Jakarta Sans)
@@ -28,66 +29,77 @@ ecobite-frontend/
 ├── public/
 ├── src/
 │   ├── assets/                 # Imágenes, isotipos y fondos SVG
-│   │   └── backgrounds/
 │   ├── components/
 │   │   ├── layout/             # Layout principal, Header y Footer
-│   │   │   └── header/         # Header y Navbar responsive con menú mobile
 │   │   ├── sections/           # Secciones compuestas de vistas (Hero, Dashboard)
-│   │   │   └── hero/
 │   │   └── ui/                 # Componentes reutilizables (Cards, Badges, Logos)
 │   ├── constants/              # Textos y constantes de marketing
 │   ├── pages/                  # Vistas principales de navegación
 │   ├── services/               # Clientes de API y peticiones HTTP (Axios)
+│   ├── stores/                 # Estados globales con Zustand (auth, carrito, etc.)
 │   ├── styles/                 # Estilos globales y variables de diseño
 │   ├── App.jsx                 # Rutas y configuración de vistas
 │   ├── index.css
 │   └── main.jsx
 ├── index.html
 ├── vite.config.js
+├── .env.example
 ├── .env
 └── package.json
 ```
 
-## Instalación y ejecución
+## Instalación y ejecución local
 
-### Requisitos
+Sigue estos pasos para levantar el entorno de desarrollo en tu máquina:
 
-- Node.js (versión 20 o superior recomendada)
-- npm
+### Requisitos previos
 
-### 1. Clonar el repositorio
+- **Node.js** (versión 20 o superior recomendada)
+- **npm** (incluido con Node.js)
+- Tener el **Backend** en ejecución (por defecto en `http://localhost:3000`) para que las funciones de autenticación y datos operen con normalidad.
 
+---
+
+### Paso a paso:
+
+#### 1. Clonar el repositorio
 ```bash
 git clone https://github.com/Talently-Lab/O2601-ecobite-workspace.git
 ```
 
-### 2. Ingresar a la carpeta del Frontend
-
+#### 2. Entrar a la carpeta del Frontend
 ```bash
-cd ecobite-frontend
+cd O2601-ecobite-workspace/ecobite-frontend
 ```
 
-### 3. Instalar dependencias
-
+#### 3. Instalar las dependencias
 ```bash
 npm install
 ```
 
-### 4. Configurar variables de entorno
+#### 4. Configurar las variables de entorno (`.env`)
+Crea tu archivo `.env` en la raíz de `ecobite-frontend/` (puedes copiar el archivo de ejemplo):
 
-Crear un archivo `.env` en la raíz de `ecobite-frontend/` con la URL base del Backend:
+```bash
+# En Windows PowerShell:
+Copy-Item .env.example .env
 
+# En bash / macOS / Linux:
+cp .env.example .env
+```
+
+Asegúrate de que contenga la URL hacia la API local de tu backend:
 ```env
 VITE_API_URL=http://localhost:3000/api
 ```
 
-### 5. Iniciar el servidor de desarrollo
-
+#### 5. Iniciar la aplicación en modo desarrollo
 ```bash
 npm run dev
 ```
 
-La aplicación quedará disponible en el navegador (por defecto en `http://localhost:5173`).
+La aplicación quedará disponible en tu navegador en:
+👉 `http://localhost:5173`
 
 ---
 
