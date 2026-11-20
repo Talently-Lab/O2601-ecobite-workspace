@@ -12,6 +12,7 @@ const routes = [
   { label: "Confirmación", path: "/confirmacion" },
   { label: "Detalles", path: "/detalles" },
   { label: "Login", path: "/login" },
+  { label: "Registro", path: "/registro" },
 ];
 
 function DummyNav() {

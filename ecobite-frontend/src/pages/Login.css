@@ -1,6 +1,8 @@
 .login-page {
   min-height: 100vh;
-  background-color: var(--c-surface-alt);
+  position: relative;
+  z-index: 1;
+  background-color: var(--c-surface-alt, #DFF3E3);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -35,7 +37,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0 1rem 2rem 1rem;
   box-sizing: border-box;
 }
 
@@ -44,10 +46,15 @@
   max-width: 360px;
   display: flex;
   flex-direction: column;
+  gap: 1.25rem;
+}
+
+.login-form__group {
+  display: flex;
+  flex-direction: column;
 }
 
 .login-form__label {
-  align-self: center;
   font-family: var(--font-main, sans-serif);
   font-size: 1rem;
   color: var(--c-text, #1C1917);
@@ -82,15 +89,15 @@
   box-shadow: none;
   border: 1px solid #ccc;
   outline: none;
-  padding: 10px 12px;
+  padding: 10px 12px 10px 34px; /* Siempre reserva 34px a la izquierda para el ícono */
   font-size: 1rem;
   background-color: #fff;
   color: #000;
 }
 
-/* Cuando el warning está activo, añadimos padding a la izquierda para el ícono */
+/* El padding ya está reservado permanentemente */
 .login-input-wrapper--warning .login-input {
-  padding-left: 34px;
+  /* Mantiene los 34px fijos sin saltos */
 }
 
 /* Placeholder gris en estado default */
@@ -103,12 +110,27 @@
   color: transparent;
 }
 
+/* Mensaje de error con espacio reservado */
+.login-error-message {
+  min-height: 1.25rem;
+  margin: 0;
+  font-family: var(--font-main, sans-serif);
+  font-size: 0.875rem;
+  color: var(--c-danger, #D9443B);
+  text-align: center;
+  visibility: hidden;
+}
+
+.login-error-message--visible {
+  visibility: visible;
+}
+
 /* Botón abajo del form, centrado horizontalmente */
 .login-actions {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 0.75rem;
 }
 
 .login-button {

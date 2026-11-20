@@ -10,6 +10,7 @@ import Checkout from "./pages/Checkout";
 import Confirm from "./pages/Confirm";
 import Details from "./pages/Details";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
 
       {/*sin header ni footer*/}  
       <Route path="/login" element={<Login />} />
+      <Route path="/registro" element={<Register />} />
       </Routes>
     </BrowserRouter>
   );

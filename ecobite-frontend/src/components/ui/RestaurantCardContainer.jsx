@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
-import { getRestaurants } from "../../services/RestaurantsServices";
+import { getRestaurants } from "../../services/restaurantService";
 import "./RestaurantCardContainer.css";
 
 function RestaurantCardContainer({ onSelectRestaurant, minCards = 0 }) {
