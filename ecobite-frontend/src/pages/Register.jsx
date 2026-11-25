@@ -185,7 +185,7 @@ function Register() {
           {/* Campo: Nombre */}
           <div className="register-form__group">
             <label htmlFor="register-name" className="register-form__label">
-              Nombre
+              Ingresá tu nombre
             </label>
             <div
               className={`register-input-wrapper ${
@@ -202,7 +202,7 @@ function Register() {
                 name="name"
                 type="text"
                 className="register-input"
-                placeholder="placeholder"
+                placeholder="Nombre Apellido"
                 value={formData.name}
                 onChange={handleChange}
               />
@@ -212,7 +212,7 @@ function Register() {
           {/* Campo: E-mail */}
           <div className="register-form__group">
             <label htmlFor="register-email" className="register-form__label">
-              Correo electrónico
+              Escribí tu dirección de email
             </label>
             <div
               className={`register-input-wrapper ${
@@ -229,7 +229,7 @@ function Register() {
                 name="email"
                 type="email"
                 className="register-input"
-                placeholder="placeholder"
+                placeholder="email@ecobite.eco"
                 value={formData.email}
                 onChange={handleChange}
               />
@@ -239,7 +239,7 @@ function Register() {
           {/* Campo: Contraseña */}
           <div className="register-form__group">
             <label htmlFor="register-password" className="register-form__label">
-              Contraseña (entre 8 y 27 caracteres)
+              Elegí una contraseña segura. (entre 8 y 72 caracteres)
             </label>
             <div
               className={`register-input-wrapper ${
@@ -256,7 +256,7 @@ function Register() {
                 name="password"
                 type="password"
                 className="register-input"
-                placeholder="placeholder"
+                placeholder="contraseña"
                 value={formData.password}
                 onChange={handleChange}
               />
@@ -269,7 +269,7 @@ function Register() {
               htmlFor="register-confirmPassword"
               className="register-form__label"
             >
-              Confirma contraseña
+              Volvé a ingresar tu contraseña
             </label>
             <div
               className={`register-input-wrapper ${
@@ -288,7 +288,7 @@ function Register() {
                 name="confirmPassword"
                 type="password"
                 className="register-input"
-                placeholder="placeholder"
+                placeholder="contraseña"
                 value={formData.confirmPassword}
                 onChange={handleChange}
               />
