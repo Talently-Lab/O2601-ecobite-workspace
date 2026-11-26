@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useCartStore } from "../../stores/cartStore";
+import { showCart } from "../../stores/uiStore";
 import "./ProductCard.css";
 
 function ProductCard({ product = {}, onSelect, onAddToCart }) {
+  const addItem = useCartStore((state) => state.addItem);
   const {
     id,
     idProducto = id,
@@ -57,15 +60,25 @@ function ProductCard({ product = {}, onSelect, onAddToCart }) {
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    if (isAvailable && onAddToCart) {
-      onAddToCart({
-        idProducto,
-        product,
-        quantity: selectedQuantity,
-      });
+    if (!isAvailable) return;
+
+    const payload = {
+      idProducto,
+      product,
+      quantity: Number(selectedQuantity),
+    };
+
+    // 1. Guardamos directamente en el store global del carrito
+    addItem(payload);
+
+    // 2. Mostramos el carrito usando la función global
+    showCart();
+
+    // 3. Callback opcional del padre
+    if (onAddToCart) {
+      onAddToCart(payload);
     }
   };
-
   const handleCardClick = () => {
     if (onSelect) {
       onSelect(idProducto);
@@ -75,14 +88,6 @@ function ProductCard({ product = {}, onSelect, onAddToCart }) {
   return (
     <article
       className={`product-card ${cardStatusClass}`}
-      onClick={handleCardClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          handleCardClick();
-        }
-      }}
       data-product-id={idProducto}
     >
       {/* 1. Header de la card: Nombre del producto */}

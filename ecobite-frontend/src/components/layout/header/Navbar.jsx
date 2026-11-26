@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
+import { useCartStore } from "../../../stores/cartStore";
+import { showCart } from "../../../stores/uiStore";
+
 function Navbar({ location = "Av. Cabildo 1500, CABA" }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const uniqueItemCount = useCartStore(state => state.items.length);
+
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
@@ -68,6 +73,17 @@ function Navbar({ location = "Av. Cabildo 1500, CABA" }) {
           <span className="navbar__location-text">{location}</span>
         </div>
 
+        {/* Botón de Carrito Desktop */}
+        <button
+          type="button"
+          className="navbar__cart-btn"
+          onClick={showCart}
+          aria-label={`Ver carrito (${uniqueItemCount})`}
+        >
+          <i className="fa-solid fa-cart-shopping"></i>
+          <span className="navbar__cart-count">{uniqueItemCount}</span>
+        </button>
+
         {/* Botón de Login Desktop */}
         <button 
           type="button" 
@@ -107,6 +123,16 @@ function Navbar({ location = "Av. Cabildo 1500, CABA" }) {
               <span className="navbar__dropdown-text">{location}</span>
             </button>
             
+            {/* Botón de Carrito Mobile */}
+            <button
+              type="button"
+              className="navbar__dropdown-item"
+              onClick={() => { showCart(); closeMenu(); }}
+            >
+              <i className="fa-solid fa-cart-shopping navbar__dropdown-icon"></i>
+              <span className="navbar__dropdown-text">Ver carrito <div className="navbar__cart-count">{uniqueItemCount}</div></span>
+            </button>
+
             {/* Botón de Login Mobile */}
             <button
               type="button"

@@ -18,13 +18,16 @@
   color: var(--c-text);
 
   /* Toda la card es un accionable */
-  cursor: pointer;
+  /* cursor removed – card is no longer clickable */
+  /* cursor: pointer; */
   user-select: none; /* El texto no es seleccionable */
 }
 
 /* Tarjetas disponibles: hover sutil */
 .product-card--available:hover {
-  transform: translateY(-2px);
+  /* Crece 10% desde el centro */
+  transform: scale(1.03);
+  transform-origin: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
@@ -200,7 +203,8 @@
   border: none;
   font-size: 1.1rem;
   font-weight: 700;
-  cursor: pointer;
+  /* cursor removed – card is no longer clickable */
+  /* cursor: pointer; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,7 +260,8 @@
   font-family: var(--font-main);
   font-size: 0.88rem;
   font-weight: 600;
-  cursor: pointer;
+  /* cursor removed – card is no longer clickable */
+  /* cursor: pointer; */
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 

@@ -1,7 +1,8 @@
+
 function Checkout() {
     return (
         <>
-            <h1>Soy el contenido del Cart</h1>
+            <h1>Soy el contenido del Checkout</h1>
         </>
     );
 }

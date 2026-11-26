@@ -1,0 +1,135 @@
+/* Backdrop: solo existe/se muestra en modo desktop */
+.cart-drawer__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.35);
+  z-index: 1090; /* Justo debajo del drawer (1100) y encima del resto (1000) */
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  z-index: 1100;
+
+  /* Ancho en desktop: el mayor entre 30% del viewport y 400px (pero nunca mayor al 100vw) */
+  width: min(100vw, max(30vw, 400px));
+  box-sizing: border-box;
+
+  background-color: var(--c-surface-alt);
+  border-left: 1px solid var(--c-border);
+
+  display: flex;
+  flex-direction: column;
+  /* overflow visible para permitir que la mitad izquierda del botón salga fuera del drawer */
+  overflow: visible;
+  color: var(--c-text);
+
+  /* Animación de deslizado suave hacia la derecha */
+  transition: transform 0.3s ease-in-out;
+}
+
+.cart-drawer--open {
+  transform: translateX(0);
+}
+
+.cart-drawer--closed {
+  transform: translateX(100%);
+  pointer-events: none;
+}
+
+.cart-drawer--closed .cart-drawer__close-btn {
+  display: none;
+}
+
+/* Botón de cerrar: mitad afuera, mitad adentro en el borde izquierdo y centrado verticalmente en el viewport */
+.cart-drawer__close-btn {
+  position: absolute;
+  left: 0;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+  z-index: 1110;
+
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid var(--c-border);
+  border-radius: 50%;
+  color: var(--c-primary-dark);
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.cart-drawer__close-btn:hover {
+  background-color: var(--c-primary);
+  color: #ffffff;
+}
+
+.cart-drawer__header {
+  border-bottom: 1px solid var(--c-border);
+  flex-shrink: 0;
+}
+
+.cart-drawer__header__navbar {
+  height: 64px;
+  background-color: #FEF7FF;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* Botón de cerrar [X] en el header (siempre visible en desktop y mobile) */
+.cart-drawer__header-close-btn {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  color: var(--c-primary-dark);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cart-drawer__header-close-btn:hover {
+  background-color: var(--c-surface-alt);
+  color: var(--c-danger);
+}
+
+/* Área con scroll independiente */
+.cart-drawer__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Mobile: ocupa toda la pantalla y no existe backdrop */
+@media (max-width: 768px) {
+  .cart-drawer__backdrop {
+    display: none;
+  }
+
+  .cart-drawer {
+    width: 100vw;
+    border-left: none;
+  }
+
+  /* En mobile se elimina el botón de cerrar lateral, quedando solo el botón [X] del header */
+  .cart-drawer__close-btn {
+    display: none;
+  }
+}
