@@ -96,7 +96,7 @@ async function main() {
     quantityAvailable: 5,
     weightKg: "0.500",
     originalPrice: "5000.00",
-    rescuePrice: "2500.00",
+    rescuePrice: "3500.00",
     date: new Date(new Date().toISOString().slice(0, 10)),
     pickupFrom: new Date("1970-01-01T17:00:00.000Z"),
     pickupUntil: new Date("1970-01-01T20:00:00.000Z"),
