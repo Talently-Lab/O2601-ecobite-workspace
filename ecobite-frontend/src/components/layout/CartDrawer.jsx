@@ -1,6 +1,7 @@
 import React from "react";
 import { useUiStore } from "../../stores/uiStore";
 import { useCartStore } from "../../stores/cartStore";
+import { useNavigate } from "react-router-dom";
 import "./CartDrawer.css";
 import { shallow } from "zustand/shallow";
 import Isologotipo from "../ui/Isologotipo";
@@ -14,8 +15,14 @@ function CartDrawer() {
   const items = useCartStore(state => state.items);
   const updateQuantity = useCartStore(state => state.updateQuantity);
   const removeItem = useCartStore(state => state.removeItem);
-
   const handleClose = () => useUiStore.getState().closeCartDrawer();
+  const navigate = useNavigate();
+  const handleCheckout = () => {
+    // Navigate to checkout; the checkout page will read the cart from the global store.
+    navigate('/pago');
+    // Optionally close the drawer after navigation.
+    handleClose();
+  };
 
   return (
     <>
@@ -48,6 +55,17 @@ function CartDrawer() {
           </div>
 
           <div className="cart-drawer__header__navbar">
+            {/* Checkout button */}
+            <button
+              type="button"
+              className="cart-drawer__checkout-btn"
+              onClick={handleCheckout}
+              aria-label="Ir a checkout"
+            >
+              <i className="fa-solid fa-credit-card" />
+              <span>Checkout</span>
+            </button>
+            
             <button
               type="button"
               className="cart-drawer__header-close-btn"
@@ -56,6 +74,7 @@ function CartDrawer() {
             >
               <i className="fa-solid fa-xmark" />
             </button>
+
           </div>
         </div>
 
