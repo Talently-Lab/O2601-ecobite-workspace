@@ -1,0 +1,22 @@
+.product-card-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 0;
+}
+
+.product-card-container__grid {
+  /* Flexbox con wrap natural idéntico al contenedor de restaurantes */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.product-card-container__state {
+  text-align: center;
+  padding: 32px;
+  font-family: var(--font-main);
+  color: var(--c-text-muted);
+}

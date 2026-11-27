@@ -1,0 +1,151 @@
+.login-page {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  background-color: var(--c-surface-alt, #DFF3E3);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Header propio del login */
+.login-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  box-sizing: border-box;
+}
+
+.login-header__logo-container {
+  height: 10vh;
+  width: 60vw;
+  max-height: 10vh;
+  max-width: 60vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Cuerpo / Formulario */
+.login-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1rem 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.login-form__group {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form__label {
+  font-family: var(--font-main, sans-serif);
+  font-size: 1rem;
+  color: var(--c-text, #1C1917);
+  margin-bottom: 0.5rem;
+}
+
+/* Contenedor del Input (para posicionar visualmente el ícono) */
+.login-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-danger); /* Color de advertencia */
+  pointer-events: none;
+  font-size: 1rem;
+  z-index: 1;
+}
+
+/* Input rectangular sin bordes redondeados ni sombras */
+.login-input {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid #ccc;
+  outline: none;
+  padding: 10px 12px 10px 34px; /* Siempre reserva 34px a la izquierda para el ícono */
+  font-size: 1rem;
+  background-color: #fff;
+  color: #000;
+}
+
+/* El padding ya está reservado permanentemente */
+.login-input-wrapper--warning .login-input {
+  /* Mantiene los 34px fijos sin saltos */
+}
+
+/* Placeholder gris en estado default */
+.login-input::placeholder {
+  color: #888888;
+}
+
+/* Al hacer focus, ocultamos el texto del placeholder */
+.login-input:focus::placeholder {
+  color: transparent;
+}
+
+/* Mensaje de error con espacio reservado */
+.login-error-message {
+  min-height: 1.25rem;
+  margin: 0;
+  font-family: var(--font-main, sans-serif);
+  font-size: 0.875rem;
+  color: var(--c-danger, #D9443B);
+  text-align: center;
+  visibility: hidden;
+}
+
+.login-error-message--visible {
+  visibility: visible;
+}
+
+/* Botón abajo del form, centrado horizontalmente */
+.login-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+.login-button {
+  background-color: #1A0BED;
+  color: #ffffff;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 12px 28px;
+  font-family: var(--font-main, sans-serif);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #0E03AA;
+
+}
