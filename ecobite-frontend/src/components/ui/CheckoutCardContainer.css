@@ -1,0 +1,74 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   CheckoutCardContainer.css
+   Mobile-first: base en 320 px.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Contenedor principal ───────────────────────────────────────────────── */
+.checkout-card-container {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border-radius: var(--radius-sm, 8px);
+  overflow: hidden;
+  border: 1px solid var(--c-border, #efe6d2);
+  font-family: var(--font-main, "Plus Jakarta Sans", sans-serif);
+}
+
+/* ── Encabezado de columnas ─────────────────────────────────────────────── */
+.checkout-card-container__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 10px;
+  background: var(--c-surface-alt, #dff3e3);
+  font-size: 0.65rem;      /* ≈ 10.4 px; cabe en 320 px */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-text-muted, #5b6b63);
+  box-sizing: border-box;
+}
+
+/* Primera columna: "Producto" se alinea a la izquierda */
+.checkout-card-container__col-product {
+  flex: 1 1 auto;
+}
+
+/* Segunda columna: "Cant. / Precio / Total" a la derecha */
+.checkout-card-container__col-numbers {
+  flex: 0 0 auto;
+  text-align: right;
+  /* Mismo ancho mínimo que .checkout-card__numbers para alineación visual */
+  min-width: 94px;
+}
+
+/* ── Lista de tarjetas ──────────────────────────────────────────────────── */
+.checkout-card-container__list {
+  display: flex;
+  flex-direction: column;
+  /* Las cards ya llevan su propio border-bottom */
+}
+
+/* ── Responsive: ≥ 480 px ───────────────────────────────────────────────── */
+@media (min-width: 480px) {
+  .checkout-card-container__header {
+    padding: 8px 12px;
+    font-size: 0.7rem;
+  }
+
+  .checkout-card-container__col-numbers {
+    min-width: 110px;
+  }
+}
+
+/* ── Responsive: ≥ 640 px ───────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  .checkout-card-container__header {
+    padding: 9px 16px;
+    font-size: 0.75rem;
+  }
+
+  .checkout-card-container__col-numbers {
+    min-width: 120px;
+  }
+}

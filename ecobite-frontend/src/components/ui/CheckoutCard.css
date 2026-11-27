@@ -1,0 +1,197 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   CheckoutCard.css
+   Mobile-first: base en 320 px, escala hacia arriba.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Tarjeta ─────────────────────────────────────────────────────────────── */
+.checkout-card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  background: #fff;
+  border-bottom: 1px solid var(--c-border, #efe6d2);
+  font-family: var(--font-main, "Plus Jakarta Sans", sans-serif);
+  color: var(--c-text, #1c1917);
+  box-sizing: border-box;
+  /* En 320 px el contenido debe caber sin scroll horizontal */
+  width: 100%;
+  min-width: 0;
+}
+
+.checkout-card:last-child {
+  border-bottom: none;
+  border-radius: 0 0 var(--radius-sm, 8px) var(--radius-sm, 8px);
+}
+.checkout-card:first-child {
+  border-radius: var(--radius-sm, 8px) var(--radius-sm, 8px) 0 0;
+}
+.checkout-card:only-child {
+  border-radius: var(--radius-sm, 8px);
+}
+
+/* ── Imagen ──────────────────────────────────────────────────────────────── */
+/* 56 × 56 px en mobile; 72 × 72 en pantallas más anchas */
+.checkout-card__image-wrap {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm, 8px);
+  overflow: hidden;
+  background: var(--c-border, #efe6d2);
+}
+
+.checkout-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.checkout-card__no-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  line-height: 1.2;
+  color: var(--c-text-muted, #5b6b63);
+  text-align: center;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+/* ── Info (nombre + tienda) ──────────────────────────────────────────────── */
+.checkout-card__info {
+  flex: 1 1 auto;
+  min-width: 0;          /* necesario para que text-overflow funcione */
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.checkout-card__name {
+  margin: 0;
+  font-size: 0.85rem;    /* ≈ 13.6 px; legible en 320 px */
+  font-weight: 700;
+  color: var(--c-primary-dark, #134e35);
+  /* Truncar si no cabe */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.checkout-card__store {
+  margin: 0;
+  font-size: 0.72rem;    /* ≈ 11.5 px */
+  color: var(--c-text-muted, #5b6b63);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Columna numérica (Cant / P.unit / Total) ────────────────────────────── */
+/* Ancho fijo para que no se expanda arbitrariamente en pantallas pequeñas   */
+.checkout-card__numbers {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+  /* En 320 px reservamos ~100 px para esta columna */
+  min-width: 94px;
+}
+
+/* Fila: label + valor */
+.checkout-card__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6px;
+  width: 100%;
+}
+
+.checkout-card__label {
+  font-size: 0.65rem;    /* ≈ 10.4 px */
+  color: var(--c-text-muted, #5b6b63);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.checkout-card__value {
+  font-size: 0.8rem;     /* ≈ 12.8 px */
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Fila de Total: destaque visual */
+.checkout-card__row--total {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--c-border, #efe6d2);
+}
+
+.checkout-card__value--total {
+  font-size: 0.9rem;     /* ≈ 14.4 px */
+  font-weight: 800;
+  color: var(--c-primary, #007a55);
+}
+
+/* ── Responsive: ≥ 480 px ───────────────────────────────────────────────── */
+@media (min-width: 480px) {
+  .checkout-card {
+    gap: 14px;
+    padding: 12px;
+  }
+
+  .checkout-card__image-wrap {
+    flex: 0 0 68px;
+    width: 68px;
+    height: 68px;
+  }
+
+  .checkout-card__name {
+    font-size: 0.92rem;
+  }
+
+  .checkout-card__store {
+    font-size: 0.78rem;
+  }
+
+  .checkout-card__numbers {
+    min-width: 110px;
+  }
+
+  .checkout-card__value {
+    font-size: 0.85rem;
+  }
+
+  .checkout-card__value--total {
+    font-size: 0.95rem;
+  }
+}
+
+/* ── Responsive: ≥ 640 px ───────────────────────────────────────────────── */
+@media (min-width: 640px) {
+  .checkout-card {
+    gap: 16px;
+    padding: 14px 16px;
+  }
+
+  .checkout-card__image-wrap {
+    flex: 0 0 72px;
+    width: 72px;
+    height: 72px;
+  }
+
+  .checkout-card__name {
+    font-size: 0.95rem;
+  }
+
+  .checkout-card__numbers {
+    min-width: 120px;
+  }
+}
