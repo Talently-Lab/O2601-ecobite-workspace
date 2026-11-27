@@ -1,203 +1,56 @@
 # EcoBite — Backend API
 
-API REST del proyecto **EcoBite**, desarrollada con Node.js y Express, en el marco del proyecto colaborativo de Talently Lab.
-
-## Descripción
-
-EcoBite es una plataforma web orientada al rescate de excedentes alimentarios.
-
-Permite que los usuarios consulten ofertas de comida a precio reducido, realicen reservas y retiren sus pedidos en los establecimientos mediante un código.
-
-**Modalidad:** Rescate de excedentes (sin delivery).
-
-**Métrica principal:** Kilogramos de comida rescatada.
+API REST de EcoBite, proyecto colaborativo de Talently Lab orientado al rescate de excedentes alimentarios. Los clientes reservan comida a precio reducido y la retiran en el local mediante un código, sin delivery. La métrica principal es la cantidad de kg de comida rescatada.
 
 ## Tecnologías
 
-- Node.js
-- Express 5
-- JavaScript (ES Modules)
-- PostgreSQL 17
-- Docker Compose
-- Prisma ORM 7
-- CORS
-- dotenv
-- Morgan
-- Joi (validación de datos)
-- bcryptjs (hash de contraseñas)
-- jsonwebtoken (autenticación JWT y autorización por roles)
-
-## Estructura del Backend
-
-```text
-backend/
-├── prisma/
-│   ├── migrations/
-│   ├── schema.prisma
-│   └── seed.js
-├── src/
-│   ├── config/
-│   │   └── prisma.js
-│   ├── controllers/
-│   │   └── health.controller.js
-│   ├── middlewares/
-│   │   ├── validateData.js
-│   │   ├── auth.middleware.js
-│   │   └── authorize.middleware.js
-│   ├── modules/
-│   │   ├── restaurants/
-│   │   │   ├── restaurant.routes.js
-│   │   │   ├── restaurant.controller.js
-│   │   │   └── restaurant.service.js
-│   │   ├── surpluses/
-│   │   │   ├── surplus.routes.js
-│   │   │   ├── surplus.controller.js
-│   │   │   └── surplus.service.js
-│   │   └── users/
-│   │       ├── user.routes.js
-│   │       ├── user.controller.js
-│   │       ├── user.service.js
-│   │       └── user.schema.js
-│   ├── routes/
-│   │   └── health.routes.js
-│   ├── utils/
-│   │   └── responseHelper.js
-│   ├── api.routes.js
-│   └── app.js
-├── index.js
-├── docker-compose.yml
-├── prisma7.config.ts
-├── .env.example
-└── package.json
-```
+Node.js 22 (compatible con Prisma 7), Express 5, JavaScript (ES Modules), PostgreSQL 17, Docker Compose, Prisma ORM 7, Joi, bcryptjs, JWT, CORS, dotenv y Morgan.
 
 ## Instalación y ejecución
 
-### Requisitos
-
-- Node.js 22 compatible con Prisma 7
-- npm
-- Docker Desktop
-
-### 1. Clonar el repositorio
+Requisitos: Node.js, npm y Docker Desktop.
 
 ```bash
 git clone https://github.com/Talently-Lab/O2601-ecobite-workspace.git
-```
-
-### 2. Ingresar al Backend
-
-```bash
 cd O2601-ecobite-workspace/backend
-```
-
-### 3. Instalar dependencias
-
-```bash
 npm install
 ```
 
-### 4. Configurar variables de entorno
-
-Crear un archivo `.env` dentro de `backend/`, tomando como referencia `.env.example`.
+Crear `.env` a partir de `.env.example` y configurar:
 
 ```env
 PORT=3000
 NODE_ENV=development
-
 POSTGRES_PASSWORD=tu_password_local
 DATABASE_URL="postgresql://ecobite:tu_password_local@localhost:5432/ecobite_db?schema=public"
-
-JWT_SECRET="reemplazar_por_clave_aleatoria_segura"
-JWT_EXPIRES_IN="1h"
-
+JWT_SECRET=tu_clave_aleatoria_segura
+JWT_EXPIRES_IN=1h
 ADMIN_NAME="Administrador EcoBite"
-ADMIN_EMAIL="admin@ecobite.com"
-ADMIN_PASSWORD="reemplazar_por_password_segura"
+ADMIN_EMAIL=admin@ecobite.com
+ADMIN_PASSWORD=tu_password_segura
 ```
 
-La contraseña de `DATABASE_URL` debe coincidir con `POSTGRES_PASSWORD`.
-
-**Importante:** El archivo `.env` contiene credenciales locales y no debe subirse al repositorio.
-
-Generar `JWT_SECRET` mediante:
+La contraseña de PostgreSQL debe coincidir en ambas variables. No subir `.env` a GitHub. Para generar una clave JWT segura:
 
 ```bash
 node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
 ```
 
-Utilizar una contraseña robusta para el administrador, preferentemente de al menos 12 caracteres.
-
-### 5. Levantar PostgreSQL con Docker
-
-Iniciar Docker Desktop y ejecutar:
+Con Docker Desktop iniciado, ejecutar:
 
 ```bash
 docker compose up -d
-```
-
-Verificar que el contenedor esté funcionando:
-
-```bash
-docker compose ps
-```
-
-### 6. Aplicar migraciones de Prisma
-
-```bash
 npx prisma migrate deploy
-```
-
-Este comando aplica las migraciones existentes y crea las tablas en PostgreSQL.
-
-### 7. Generar Prisma Client
-
-```bash
 npx prisma generate
-```
-
-### 8. Cargar datos iniciales y crear el administrador
-
-Con PostgreSQL funcionando y las migraciones aplicadas:
-
-```bash
 node prisma/seed.js
-```
-
-El seed:
-
-- Crea el administrador inicial utilizando `ADMIN_NAME`, `ADMIN_EMAIL` y `ADMIN_PASSWORD`.
-- Hashea la contraseña mediante bcryptjs.
-- Asigna el rol `ADMIN`.
-- Carga los datos de prueba del restaurante y excedente.
-- Evita duplicar al administrador si ya existe.
-- No modifica automáticamente su contraseña al volver a ejecutarse.
-
-No se permite crear administradores desde el registro público.
-
-### 9. Ejecutar el servidor
-
-**Modo desarrollo:**
-
-```bash
 npm run dev
 ```
 
-Utiliza `node --watch` para reiniciar automáticamente el servidor cuando se modifican los archivos.
+El seed crea el administrador inicial y datos de prueba. Ejecutarlo solo cuando sea necesario: puede actualizar el excedente de prueba existente. El registro público crea únicamente clientes.
 
-**Modo normal:**
-
-```bash
-npm start
-```
-
-Servidor local: http://localhost:3000
-
----
+**URL local:** `http://localhost:3000`. Para iniciar sin modo watch: `npm start`.
 
 ## Endpoints disponibles
-
-### Resumen
 
 | Método | Endpoint | Acceso | Descripción |
 |---|---|---|---|
@@ -206,504 +59,131 @@ Servidor local: http://localhost:3000
 | GET | `/api/restaurants` | Público | Listar restaurantes |
 | GET | `/api/surpluses` | Público | Listar excedentes |
 | POST | `/api/users/register` | Público | Registrar cliente |
-| POST | `/api/users/login` | Público | Iniciar sesión |
-| GET | `/api/users/me` | Autenticado | Obtener perfil |
+| POST | `/api/users/login` | Público | Iniciar sesión y obtener JWT |
+| GET | `/api/users/me` | Autenticado | Consultar perfil |
 | GET | `/api/users` | ADMIN | Listar clientes |
+| POST | `/api/surpluses` | ADMIN | Crear excedente |
+| POST | `/api/orders` | CLIENTE | Crear reserva |
+| PATCH | `/api/orders/:id/pickup` | ADMIN | Confirmar retiro |
 
-### GET /health
+### Autenticación
 
-Verifica que la API esté funcionando correctamente.
+Registro: enviar `name`, `email` y `password` (8 a 72 caracteres). Login: enviar `email` y `password`.
 
-```http
-GET http://localhost:3000/health
-```
-
-**Respuesta exitosa — 200 OK:**
-
-```json
-{
-  "status": "ok",
-  "message": "EcoBite API funcionando"
-}
-```
-
-### GET /health/db
-
-Verifica la conexión entre el backend y PostgreSQL mediante Prisma.
+Para endpoints protegidos, utilizar el token obtenido en el login:
 
 ```http
-GET http://localhost:3000/health/db
-```
-
-**Respuesta exitosa — 200 OK:**
-
-```json
-{
-  "status": "ok",
-  "database": "connected"
-}
-```
-
-Si la base de datos no responde, devuelve `503 Service Unavailable`.
-
-### GET /api/restaurants
-
-Obtiene el listado de restaurantes activos registrados en EcoBite, ordenados alfabéticamente.
-
-```http
-GET http://localhost:3000/api/restaurants
-```
-
-**Respuesta exitosa — 200 OK:**
-
-```json
-{
-  "success": true,
-  "message": "Restaurantes obtenidos correctamente",
-  "data": []
-}
-```
-
-Si no existen restaurantes activos, devuelve un arreglo vacío.
-
-### GET /api/surpluses
-
-Lista los excedentes alimentarios disponibles para consultar desde el catálogo.
-
-```http
-GET http://localhost:3000/api/surpluses
-```
-
-**Acceso:** Público, no requiere token.
-
-**Respuesta exitosa:** `200 OK`, utilizando la estructura de respuestas estándar de la API.
-
----
-
-## Autenticación y usuarios
-
-### POST /api/users/register
-
-Permite registrar nuevos usuarios con rol `CLIENTE`.
-
-```http
-POST http://localhost:3000/api/users/register
+Authorization: Bearer <token>
 Content-Type: application/json
 ```
 
-**Body (JSON):**
+Roles: `CLIENTE` y `ADMIN`. El MVP contempla un único administrador inicial.
+
+## Semana 5 — Excedentes y reservas
+
+Los siguientes ejemplos utilizan IDs ilustrativos: reemplazarlos por UUID reales y ajustar la fecha y el horario de retiro.
+
+### POST /api/surpluses — Crear excedente (ADMIN)
 
 ```json
 {
-  "name": "Usuario Prueba",
-  "email": "prueba@ecobite.com",
-  "password": "Prueba1234"
+  "restaurantId": "UUID_DEL_RESTAURANTE",
+  "name": "Pack de medialunas",
+  "foodType": "Panadería",
+  "quantityAvailable": 10,
+  "weightKg": 0.5,
+  "originalPrice": 5000,
+  "discountPercentage": 20,
+  "date": "2026-11-27",
+  "pickupFrom": "09:00",
+  "pickupUntil": "22:00",
+  "imageUrls": []
 }
 ```
 
-**Validaciones:**
+- Descuentos permitidos: 10%, 20% o 30%. El backend calcula `rescuePrice`; no se envía en el body.
+- Restaurante existente y activo, cantidad entera positiva, peso y precio positivos, fecha no pasada y horario inicial anterior al final.
+- `foodType` e `imageUrls` son opcionales. Horarios locales de Argentina, formato `HH:mm`.
+- Respuesta `201 Created`: excedente creado con su ID y precio calculado (en este ejemplo, $4.000).
 
-- `name`: obligatorio, entre 2 y 100 caracteres.
-- `email`: obligatorio, formato válido y único.
-- `password`: obligatoria, entre 8 y 72 caracteres.
-
-Las contraseñas se almacenan hasheadas mediante bcryptjs.
-
-**Respuesta exitosa — 201 Created (ejemplo):**
+### POST /api/orders — Crear reserva (CLIENTE)
 
 ```json
 {
-  "success": true,
-  "message": "Usuario registrado correctamente",
-  "data": {
-    "id": "6d827568-8550-4a1d-a3cf-5eea4e6a99c3",
-    "name": "Usuario Prueba",
-    "email": "prueba@ecobite.com",
-    "role": "CLIENTE",
-    "createdAt": "2026-11-12T15:28:56.384Z"
-  }
+  "surplusId": "UUID_DEL_EXCEDENTE",
+  "quantity": 2
 }
 ```
 
-**Errores posibles:**
+- Una reserva corresponde a un único excedente y puede incluir varias unidades.
+- El cliente se identifica mediante JWT. El precio y peso unitarios se obtienen de la base de datos.
+- Se valida la existencia del excedente, restaurante activo, vencimiento y stock suficiente.
+- Se descuenta stock y se crea la reserva dentro de una transacción con actualización condicional para evitar sobreventas.
+- Respuesta `201 Created`: incluye `id` (reserva), `totalAmount`, `kgRescued`, `pickupCode` (único, 6 caracteres), `status: RESERVADA` y `quantityAvailable` actualizado.
 
-| Código | Descripción |
+### PATCH /api/orders/:id/pickup — Confirmar retiro (ADMIN)
+
+Usar el ID de la reserva, no el del excedente.
+
+```json
+{
+  "pickupCode": "ABC234"
+}
+```
+
+- La reserva debe estar en estado `RESERVADA`, el código debe coincidir y el retiro debe realizarse dentro del horario establecido.
+- Respuesta `200 OK`: cambia el estado a `RETIRADA`, registra `pickedUpAt` y devuelve los kg rescatados.
+- No vuelve a descontar stock ni permite confirmar dos veces el mismo retiro.
+
+### Cálculos de negocio
+
+- `rescuePrice = originalPrice × (1 - discountPercentage / 100)` (redondeado a 2 decimales).
+- `totalAmount = quantity × unitPrice`.
+- `kgRescued = quantity × unitWeightKg`. En una reserva pendiente representa comida reservada; para el impacto ambiental solo se contabilizan reservas `RETIRADA`.
+
+## Respuestas HTTP
+
+Formato habitual: `{ "success": true, "message": "...", "data": {} }`. Los errores incluyen `success: false`, `message` y, en validaciones Joi, `errors`.
+
+| Código | Significado |
 |---|---|
-| 400 | Datos faltantes o inválidos |
-| 409 | Email ya registrado |
-| 500 | Error inesperado del servidor |
-
-**Importante:** Los usuarios registrados públicamente siempre reciben el rol `CLIENTE`. No pueden asignarse `ADMIN`.
-
-### POST /api/users/login
-
-Autentica clientes y administradores utilizando el mismo endpoint.
-
-```http
-POST http://localhost:3000/api/users/login
-Content-Type: application/json
-```
-
-**Body (JSON):**
-
-```json
-{
-  "email": "prueba@ecobite.com",
-  "password": "Prueba1234"
-}
-```
-
-**Respuesta exitosa — 200 OK:**
-
-```json
-{
-  "success": true,
-  "message": "Inicio de sesión exitoso",
-  "data": {
-    "token": "<JWT_FIRMADO>",
-    "user": {
-      "id": "6d827568-8550-4a1d-a3cf-5eea4e6a99c3",
-      "name": "Usuario Prueba",
-      "email": "prueba@ecobite.com",
-      "role": "CLIENTE"
-    }
-  }
-}
-```
-
-**Funcionamiento:**
-
-1. Valida el email y la contraseña.
-2. Busca el usuario en PostgreSQL.
-3. Compara la contraseña mediante bcryptjs.
-4. Genera un JWT firmado.
-5. Devuelve el token y los datos públicos del usuario.
-
-El JWT contiene el identificador (`id`), el rol (`role`), la fecha de emisión (`iat`) y la expiración (`exp`).
-
-**Errores:**
-
-- `400 Bad Request`: datos inválidos.
-- `401 Unauthorized`: credenciales incorrectas.
-
-### GET /api/users/me
-
-Devuelve los datos actuales del usuario autenticado consultando PostgreSQL.
-
-```http
-GET http://localhost:3000/api/users/me
-Authorization: Bearer <JWT>
-```
-
-**Acceso:** CLIENTE y ADMIN autenticados.
-
-**Respuesta exitosa — 200 OK:**
-
-```json
-{
-  "success": true,
-  "message": "Datos del usuario obtenidos correctamente",
-  "data": {
-    "id": "6d827568-8550-4a1d-a3cf-5eea4e6a99c3",
-    "name": "Usuario Prueba",
-    "email": "prueba@ecobite.com",
-    "role": "CLIENTE",
-    "createdAt": "2026-11-12T15:28:56.384Z"
-  }
-}
-```
-
-La información proviene de PostgreSQL, no únicamente del contenido del JWT.
-
-No devuelve contraseñas, `iat` ni `exp`.
-
-**Errores:**
-
-- `401 Unauthorized`: token ausente, inválido o expirado.
-
-### GET /api/users
-
-Obtiene el listado de usuarios registrados con rol `CLIENTE`.
-
-**Acceso exclusivo:** ADMIN.
-
-```http
-GET http://localhost:3000/api/users
-Authorization: Bearer <JWT_ADMIN>
-```
-
-**Respuesta exitosa — 200 OK:**
-
-```json
-{
-  "success": true,
-  "message": "Clientes obtenidos correctamente",
-  "data": [
-    {
-      "id": "6d827568-8550-4a1d-a3cf-5eea4e6a99c3",
-      "name": "Usuario Prueba",
-      "email": "prueba@ecobite.com",
-      "role": "CLIENTE",
-      "createdAt": "2026-11-12T15:28:56.384Z"
-    }
-  ]
-}
-```
-
-**Consideraciones:**
-
-- Solo devuelve usuarios con rol `CLIENTE`.
-- El administrador no aparece en el listado.
-- No expone contraseñas.
-- Los clientes se ordenan por fecha de creación descendente.
-
-**Errores:**
-
-| Código | Descripción |
-|---|---|
+| 200 / 201 | Operación exitosa / recurso creado |
+| 400 | Datos inválidos o regla de negocio incumplida |
 | 401 | Token ausente, inválido o expirado |
-| 403 | Usuario sin permisos de administrador |
-| 500 | Error inesperado del servidor |
+| 403 | Rol sin permisos |
+| 404 | Recurso inexistente |
+| 409 | Conflicto: stock insuficiente, estado incompatible o duplicado |
+| 500 | Error interno |
 
----
+## Arquitectura y base de datos
 
-## Autenticación y autorización por roles
-
-El backend implementa autenticación mediante JSON Web Tokens (JWT) y autorización basada en roles (RBAC).
-
-### Roles disponibles
-
-| Rol | Descripción |
-|---|---|
-| CLIENTE | Usuario que consulta y reserva excedentes |
-| ADMIN | Administrador responsable de gestionar la plataforma |
-
-### Permisos
-
-| Operación | Público | CLIENTE | ADMIN |
-|---|---|---|---|
-| Registro | Sí | Sí | Sí |
-| Login | Sí | Sí | Sí |
-| Consultar restaurantes | Sí | Sí | Sí |
-| Consultar excedentes | Sí | Sí | Sí |
-| Consultar perfil `/me` | No | Sí | Sí |
-| Listar clientes | No | No | Sí |
-
-### Middleware authenticate
-
-Archivo: `src/middlewares/auth.middleware.js`
-
-Responsabilidades:
-
-- Extraer el token del header `Authorization`.
-- Validar la firma del JWT.
-- Verificar su vigencia.
-- Guardar el payload autenticado en `req.user`.
-- Rechazar solicitudes con tokens inválidos o expirados.
-
-### Middleware authorize
-
-Archivo: `src/middlewares/authorize.middleware.js`
-
-Comprueba que el usuario autenticado tenga uno de los roles permitidos.
-
-Ejemplo:
-
-```javascript
-router.get(
-  "/",
-  authenticate,
-  authorize("ADMIN"),
-  getClients
-);
+```text
+backend/
+├── prisma/           # Schema, migraciones y seed
+├── src/
+│   ├── config/       # Prisma
+│   ├── controllers/  # Health
+│   ├── middlewares/  # JWT, roles y Joi
+│   ├── modules/      # users, restaurants, surpluses, orders
+│   ├── routes/       # Health
+│   ├── utils/        # ResponseHelper
+│   ├── api.routes.js
+│   └── app.js
+├── index.js
+└── docker-compose.yml
 ```
 
-El acceso se valida en el backend, independientemente de las restricciones de navegación del frontend.
-
----
-
-## Administrador inicial
-
-EcoBite utiliza un único administrador inicial para el MVP.
-
-Este usuario es responsable de administrar restaurantes, sus excedentes y consultar información de la plataforma.
-
-### Creación del administrador
-
-El administrador se crea mediante el archivo:
-
-`prisma/seed.js`
-
-Las credenciales iniciales se configuran en `.env`:
-
-```env
-ADMIN_NAME="Administrador EcoBite"
-ADMIN_EMAIL="admin@ecobite.com"
-ADMIN_PASSWORD="reemplazar_por_password_segura"
-```
-
-Se ejecuta mediante:
-
-```bash
-node prisma/seed.js
-```
-
-### Consideraciones de seguridad
-
-- No existe un endpoint público para crear administradores.
-- El registro público asigna únicamente `CLIENTE`.
-- La contraseña del administrador se almacena hasheada.
-- El seed comprueba si ya existe un administrador antes de crear uno.
-- Las credenciales no deben almacenarse en el repositorio.
-- La contraseña no se actualiza automáticamente al volver a ejecutar el seed.
-- El seed evita duplicados durante su ejecución normal, aunque no existe una restricción de unicidad del rol ADMIN a nivel de PostgreSQL.
-
-### Login del administrador
-
-El administrador utiliza el mismo endpoint que los clientes:
-
-```http
-POST /api/users/login
-```
-
-Body de ejemplo:
-
-```json
-{
-  "email": "admin@ecobite.com",
-  "password": "TU_PASSWORD_DEL_ENV"
-}
-```
-
-El backend devuelve un JWT y un usuario con rol `ADMIN`.
-
-Frontend podrá utilizar ese rol para mostrar el panel administrativo.
-
----
-
-## Pruebas con Postman — Semana 4
-
-Se realizaron pruebas de autenticación y autorización utilizando Postman.
-
-| Prueba | Resultado |
-|---|---|
-| Login con credenciales válidas | 200 OK |
-| Login con contraseña incorrecta | 401 Unauthorized |
-| GET `/api/users/me` con JWT válido | 200 OK |
-| GET `/api/users/me` con token inválido | 401 Unauthorized |
-| GET `/api/users/me` con administrador | 200 OK |
-| GET `/api/users` con ADMIN | 200 OK |
-| GET `/api/users` con CLIENTE | 403 Forbidden |
-| GET `/api/users` con token inválido | 401 Unauthorized |
-
-### Configurar JWT en Postman
-
-1. Realizar el login.
-2. Copiar `data.token` de la respuesta.
-3. Seleccionar **Authorization → Bearer Token**.
-4. Pegar el JWT.
-5. Ejecutar la solicitud protegida.
-
----
-
-## Validaciones y manejo de respuestas
-
-La API utiliza componentes reutilizables para mantener una estructura consistente.
-
-- `responseHelper.js`: centraliza las respuestas HTTP y sus códigos.
-- `validateData.js`: middleware de validación utilizando Joi.
-- `user.schema.js`: validaciones de registro y login.
-- `auth.middleware.js`: autenticación JWT.
-- `authorize.middleware.js`: autorización por roles.
-
-Las validaciones se ejecutan antes de los controladores para evitar procesar solicitudes inválidas.
-
-## Base de datos
-
-El backend utiliza PostgreSQL mediante Docker Compose y Prisma ORM para administrar los modelos y relaciones.
-
-### Modelos implementados
-
-| Modelo | Descripción |
-|---|---|
-| User | Clientes y administrador |
-| Restaurant | Restaurantes registrados |
-| Surplus | Excedentes alimentarios |
-| Reservation | Reservas y retiros de comida |
-
-### Relaciones
-
-- User → Reservation (1:N)
-- Restaurant → Surplus (1:N)
-- Surplus → Reservation (1:N)
-
-### Migraciones
-
-Las migraciones se encuentran versionadas en `prisma/migrations`.
-
-Para crear una migración durante el desarrollo:
-
-```bash
-npx prisma migrate dev --name nombre_migracion
-```
-
-Para aplicar migraciones existentes:
-
-```bash
-npx prisma migrate deploy
-```
-
-## Variables de entorno
-
-| Variable | Descripción |
-|---|---|
-| PORT | Puerto del servidor |
-| NODE_ENV | Entorno de ejecución |
-| POSTGRES_PASSWORD | Contraseña local de PostgreSQL |
-| DATABASE_URL | Conexión a la base de datos |
-| JWT_SECRET | Clave para firmar y verificar JWT |
-| JWT_EXPIRES_IN | Tiempo de expiración del JWT |
-| ADMIN_NAME | Nombre del administrador |
-| ADMIN_EMAIL | Email del administrador |
-| ADMIN_PASSWORD | Contraseña inicial del administrador |
+Modelos Prisma: `User`, `Restaurant`, `Surplus` y `Reservation`. Cada usuario puede tener varias reservas; cada restaurante, varios excedentes; cada excedente, varias reservas. El módulo Orders utiliza `Reservation`, sin agregar una tabla de pedidos.
 
 ## Estado del desarrollo
 
-### Semana 2 — Configuración y base de datos
+- Semanas 2–3: configuración, base de datos, catálogo y registro.
+- Semana 4: autenticación JWT, roles y perfil de usuario.
+- Semana 5: creación de excedentes, descuentos, reservas, control de stock y confirmación de retiro. Pruebas funcionales en Postman y DBeaver.
 
-- Configuración inicial de Node.js y Express.
-- PostgreSQL mediante Docker Compose.
-- Prisma ORM y migración inicial.
-- Modelos User, Restaurant, Surplus y Reservation.
-- Endpoints de salud `/health` y `/health/db`.
-
-### Semana 3 — Primeros endpoints
-
-- Arquitectura modular con separación de rutas, controladores y servicios.
-- `GET /api/restaurants`: listado de restaurantes.
-- `GET /api/surpluses`: listado de excedentes.
-- `POST /api/users/register`: registro de clientes.
-- Validación de datos mediante Joi.
-- Hash de contraseñas con bcryptjs.
-- Manejo centralizado de respuestas HTTP.
-- Pruebas funcionales con Postman.
-
-### Semana 4 — Autenticación y seguridad
-
-- Implementación de login mediante JWT.
-- Validación de contraseñas con bcryptjs.
-- Middleware de autenticación JWT.
-- Endpoint protegido `/api/users/me`.
-- Consulta de datos reales del usuario desde PostgreSQL.
-- Middleware de autorización por roles.
-- Creación del administrador inicial mediante Prisma Seed.
-- Endpoint `GET /api/users` exclusivo para ADMIN.
-- Restricción del listado a usuarios con rol CLIENTE.
-- Pruebas de autenticación y permisos en Postman.
+git 
 
 ## Responsable
 
-**M. Daniela Rios Valencia**  
-Backend Developer — Node.js
-
+**M. Daniela Rios Valencia** — Backend Developer (Node.js).  
 Proyecto colaborativo impulsado por **Talently Lab**.
