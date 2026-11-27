@@ -172,3 +172,112 @@ export const createOrder = async (userId, {
         500
     );
 };
+
+export const pickupOrder = async (orderId, pickupCode) => {
+
+    return await prisma.$transaction(async (tx) => {
+
+        // 1. Buscar la reserva
+        const reservation = await tx.reservation.findUnique({
+            where: {
+                id: orderId,
+            },
+            include: {
+                surplus: true,
+            },
+        });
+
+        if (!reservation) {
+            throw createError("La reserva no existe", 404);
+        }
+
+        // 2. Verificar el estado de la reserva
+        if (reservation.status !== "RESERVADA") {
+            throw createError(
+                "La reserva no se encuentra en estado RESERVADA",
+                409
+            );
+        }
+
+        // 3. Validar el código de retiro
+        if (reservation.pickupCode !== pickupCode) {
+            throw createError(
+                "El código de retiro es incorrecto",
+                400
+            );
+        }
+
+        // 4. Obtener fecha y horarios de retiro
+        const date = reservation.surplus.date
+            .toISOString()
+            .slice(0, 10);
+
+        const pickupFrom = reservation.surplus.pickupFrom
+            .toISOString()
+            .slice(11, 19);
+
+        const pickupUntil = reservation.surplus.pickupUntil
+            .toISOString()
+            .slice(11, 19);
+
+        const start = new Date(
+            `${date}T${pickupFrom}-03:00`
+        );
+
+        const end = new Date(
+            `${date}T${pickupUntil}-03:00`
+        );
+
+        const now = new Date();
+
+        // 5. Validar horario de retiro
+        if (now < start || now >= end) {
+            throw createError(
+                "La reserva está fuera del horario de retiro",
+                400
+            );
+        }
+
+        // 6. Actualizar el estado de forma condicional
+        const updated = await tx.reservation.updateMany({
+            where: {
+                id: orderId,
+                status: "RESERVADA",
+                pickupCode,
+            },
+            data: {
+                status: "RETIRADA",
+                pickedUpAt: now,
+            },
+        });
+
+        if (updated.count === 0) {
+            throw createError(
+                "La reserva ya fue procesada",
+                409
+            );
+        }
+
+        // 7. Obtener la reserva actualizada
+        const updatedReservation =
+            await tx.reservation.findUnique({
+                where: {
+                    id: orderId,
+                },
+            });
+
+        // 8. Calcular comida efectivamente rescatada
+        const kgRescued = updatedReservation.unitWeightKg
+            .mul(updatedReservation.quantity);
+
+        return {
+            id: updatedReservation.id,
+            surplusId: updatedReservation.surplusId,
+            quantity: updatedReservation.quantity,
+            totalAmount: Number(updatedReservation.totalAmount),
+            kgRescued: Number(kgRescued),
+            status: updatedReservation.status,
+            pickedUpAt: updatedReservation.pickedUpAt,
+        };
+    });
+};

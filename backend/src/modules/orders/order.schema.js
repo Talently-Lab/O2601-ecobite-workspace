@@ -22,3 +22,18 @@ export const createOrderSchema = Joi.object({
             "any.required": "La cantidad es obligatoria",
         }),
 });
+
+export const pickupOrderSchema = Joi.object({
+    pickupCode: Joi.string()
+        .trim()
+        .uppercase()
+        .length(6)
+        .pattern(/^[A-Z0-9]{6}$/)
+        .required()
+        .messages({
+            "string.empty": "El código de retiro es obligatorio",
+            "string.length": "El código debe tener 6 caracteres",
+            "string.pattern.base": "El código debe ser alfanumérico",
+            "any.required": "El código de retiro es obligatorio",
+        }),
+});
